@@ -10,19 +10,45 @@
     ],
     "properties": {
         "forget_all": {
-            "description": "Cancel all streams by type (it can be a single string e.g. 'ticks', or an array of multiple values, e.g. ['ticks', 'candles']). Possible values are: 'ticks', 'candles', 'proposal', 'proposal_open_contract', 'balance', 'transaction', 'proposal_array', 'website_status'.",
-            "type": [
-                "array",
-                "string"
+            "description": "Cancel all streams by type. The value can be either a single type e.g. `\"ticks\"`, or an array of multiple types e.g. `[\"candles\", \"ticks\"]`.",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/stream_types"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/stream_types"
+                    }
+                }
             ]
         },
         "passthrough": {
-            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the echo_req output field.",
+            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.",
             "type": "object"
         },
         "req_id": {
             "description": "[Optional] Used to map request to response.",
             "type": "integer"
+        }
+    },
+    "definitions": {
+        "stream_types": {
+            "description": "Valid stream types that can be used to unsubscribe from.",
+            "type": "string",
+            "enum": [
+                "balance",
+                "candles",
+                "cashier_payments",
+                "p2p_advert",
+                "p2p_advertiser",
+                "p2p_order",
+                "proposal",
+                "proposal_open_contract",
+                "ticks",
+                "transaction",
+                "website_status"
+            ]
         }
     }
 }

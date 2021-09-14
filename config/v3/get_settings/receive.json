@@ -12,6 +12,7 @@
             "title": "get_settings",
             "description": "User information and settings.",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "account_opening_reason": {
                     "description": "Purpose and reason for requesting the account opening. Only applicable for real money account.",
@@ -21,23 +22,23 @@
                     ]
                 },
                 "address_city": {
-                    "description": "City (note: not set for virtual-money accounts)",
+                    "description": "City (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "address_line_1": {
-                    "description": "Address line 1 (note: not set for virtual-money accounts)",
+                    "description": "Address line 1 (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "address_line_2": {
-                    "description": "Address line 2 (note: not set for virtual-money accounts)",
+                    "description": "Address line 2 (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "address_postcode": {
-                    "description": "Post Code (note: not set for virtual-money accounts)",
+                    "description": "Post Code (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "address_state": {
-                    "description": "State (note: not set for virtual-money accounts)",
+                    "description": "State (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "allow_copiers": {
@@ -75,7 +76,7 @@
                     "pattern": "^[a-z]{0,2}$"
                 },
                 "date_of_birth": {
-                    "description": "Epoch of user's birthday (note: not set for virtual-money accounts)",
+                    "description": "Epoch of user's birthday (note: Only available for users who have at least one real account)",
                     "type": [
                         "integer",
                         "null"
@@ -87,10 +88,29 @@
                 },
                 "email_consent": {
                     "description": "Boolean value 1 or 0, indicating permission to use email address for any contact which may include marketing",
-                    "type": "integer"
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "feature_flag": {
+                    "description": "Contains features that are enabled or disabled for this user",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "wallet": {
+                            "description": "Boolean value 1 or 0 indicating whether his feature this enabled or not",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
                 },
                 "first_name": {
-                    "description": "First name (note: not set for virtual-money accounts)",
+                    "description": "First name (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "has_secret_answer": {
@@ -101,6 +121,13 @@
                         1
                     ]
                 },
+                "immutable_fields": {
+                    "description": "A list of profile fields which are immutable (read-only unless they are not set yet) due to landing company regulations and the current status of the account.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "is_authenticated_payment_agent": {
                     "description": "Boolean value 1 or 0, indicating whether is payment agent (note: not applicable for virtual money accounts)",
                     "type": "integer",
@@ -110,12 +137,23 @@
                     ]
                 },
                 "last_name": {
-                    "description": "Last name (note: not set for virtual-money accounts)",
+                    "description": "Last name (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
+                "non_pep_declaration": {
+                    "description": "Indicates client's self-declaration of not being a PEP/RCA (Politically Exposed Person/Relatives and Close Associates). Note: returned for real accounts only.",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
                 "phone": {
-                    "description": "Telephone (note: not set for virtual-money accounts)",
-                    "type": "string"
+                    "description": "Telephone (note: Only available for users who have at least one real account)",
+                    "type": [
+                        "null",
+                        "string"
+                    ]
                 },
                 "place_of_birth": {
                     "description": "Place of birth, 2-letter country code.",
@@ -123,6 +161,14 @@
                         "null",
                         "string"
                     ]
+                },
+                "preferred_language": {
+                    "description": "User's preferred language, ISO standard code of language",
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "pattern": "^[A-Z]{0,2}$|^[A-Z]{2}_[A-Z]{2}$"
                 },
                 "request_professional_status": {
                     "description": "Boolean value 1 or 0, indicating if client has requested professional status.",
@@ -140,7 +186,7 @@
                     ]
                 },
                 "salutation": {
-                    "description": "Salutation (note: not set for virtual-money accounts)",
+                    "description": "Salutation (note: Only available for users who have at least one real account)",
                     "type": "string"
                 },
                 "tax_identification_number": {
@@ -178,7 +224,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

@@ -10,10 +10,11 @@
     "properties": {
         "candles": {
             "title": "candles",
-            "description": "Array of OHLC (open/high/low/close) price values for the given time (only for style='candles')",
+            "description": "Array of OHLC (open/high/low/close) price values for the given time (only for style=`candles`)",
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "close": {
                         "description": "It is the close price value for the given time",
@@ -42,9 +43,10 @@
             "title": "history",
             "description": "Historic tick data for a given symbol. Note: this will always return the latest possible set of ticks with accordance to the parameters specified.",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "prices": {
-                    "description": "An array containing list of tick values for the corresponding epoch values in 'times' array.",
+                    "description": "An array containing list of tick values for the corresponding epoch values in `times` array.",
                     "type": "array",
                     "items": {
                         "description": "Tick value.",
@@ -52,7 +54,7 @@
                     }
                 },
                 "times": {
-                    "description": "An array containing list of epoch values for the corresponding tick values in 'prices' array.",
+                    "description": "An array containing list of epoch values for the corresponding tick values in `prices` array.",
                     "type": "array",
                     "items": {
                         "description": "Epoch of the tick.",
@@ -67,15 +69,19 @@
         },
         "subscription": {
             "title": "Subscription information",
-            "description": "For subscription requests only",
+            "description": "For subscription requests only.",
             "type": "object",
+            "additionalProperties": false,
             "required": [
                 "id"
             ],
             "properties": {
                 "id": {
-                    "description": "A per-connection unique identifier. Can be passed to the forget API call to unsubscribe.",
-                    "type": "string"
+                    "description": "A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.",
+                    "type": "string",
+                    "examples": [
+                        "c84a793b-8a87-7999-ce10-9b22f7ceead3"
+                    ]
                 }
             }
         },
@@ -84,7 +90,7 @@
             "type": "object"
         },
         "msg_type": {
-            "description": "Type of the response according to the 'style' sent in request. Would be 'history' or 'candles' for the first response, and 'tick' or 'ohlc' for the rest when subscribed.",
+            "description": "Type of the response according to the `style` sent in request. Would be `history` or `candles` for the first response, and `tick` or `ohlc` for the rest when subscribed.",
             "type": "string",
             "enum": [
                 "history",
@@ -94,7 +100,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

@@ -22,13 +22,17 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "account_type": {
-                        "description": "Type of the account Example: binary",
+                        "description": "Type of the account. Please note that `binary` is deprecated and replaced by `trading`",
                         "type": "string",
                         "enum": [
-                            "binary",
-                            "mt5"
+                            "trading",
+                            "mt5",
+                            "wallet",
+                            "dxtrade",
+                            "binary"
                         ]
                     },
                     "balance": {
@@ -36,16 +40,41 @@
                         "type": "string"
                     },
                     "currency": {
-                        "description": "Default account currency Example: USD",
-                        "type": "string"
+                        "description": "Default account currency.",
+                        "type": "string",
+                        "examples": [
+                            "USD"
+                        ]
+                    },
+                    "demo_account": {
+                        "description": "0 for real accounts; 1 for virtual/demo accounts.",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ]
                     },
                     "loginid": {
-                        "description": "Client loginid Example: CR000000",
-                        "type": "string"
+                        "description": "Account identifier used for system transfers.",
+                        "type": "string",
+                        "examples": [
+                            "CR000000"
+                        ]
+                    },
+                    "market_type": {
+                        "description": "Market type of account.",
+                        "type": "string",
+                        "enum": [
+                            "financial",
+                            "synthetic"
+                        ]
                     },
                     "mt5_group": {
-                        "description": "The group of mt5 account Example: real\\vanuatu_standard",
-                        "type": "string"
+                        "description": "The group of mt5 account.",
+                        "type": "string",
+                        "examples": [
+                            "real\\vanuatu_financial"
+                        ]
                     }
                 }
             }
@@ -74,7 +103,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

@@ -1,6 +1,7 @@
 {
     "new_account_virtual": 1,
-    "client_password": "Abc123de",
+    "type": "trading",
+    "client_password": "C0rrect_p4ssword",
     "residence": "id",
     "verification_code": "uoJvVuQ6"
 }

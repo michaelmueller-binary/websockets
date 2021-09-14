@@ -12,20 +12,28 @@
             "title": "transaction",
             "description": "Realtime stream of user transaction updates.",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "action": {
                     "description": "The transaction type.",
                     "type": "string",
                     "enum": [
+                        "buy",
+                        "sell",
                         "deposit",
                         "withdrawal",
-                        "buy",
-                        "sell"
+                        "escrow",
+                        "adjustment",
+                        "virtual_credit",
+                        "transfer"
                     ]
                 },
                 "amount": {
-                    "description": "It is the amount of transaction performed Example: -83.2300",
-                    "type": "number"
+                    "description": "It is the amount of transaction performed.",
+                    "type": "number",
+                    "examples": [
+                        -83.23
+                    ]
                 },
                 "balance": {
                     "description": "Balance amount",
@@ -42,10 +50,13 @@
                     ]
                 },
                 "contract_id": {
-                    "description": "It is the contract ID. Example: 4867502908",
+                    "description": "It is the contract ID.",
                     "type": [
                         "integer",
                         "null"
+                    ],
+                    "examples": [
+                        4867502908
                     ]
                 },
                 "currency": {
@@ -68,8 +79,11 @@
                     ]
                 },
                 "id": {
-                    "description": "A stream ID that can be used to cancel this stream using the Forget request. Example: 1d6651e7d599bce6c54bd71a8283e579",
-                    "type": "string"
+                    "description": "A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.",
+                    "type": "string",
+                    "examples": [
+                        "c84a793b-8a87-7999-ce10-9b22f7ceead3"
+                    ]
                 },
                 "longcode": {
                     "description": "Description of contract purchased",
@@ -109,26 +123,33 @@
                     ]
                 },
                 "transaction_id": {
-                    "description": "It is the transaction ID. Every contract (buy or sell) or payment has a unique ID. Example: 10867502908",
-                    "type": "integer"
+                    "description": "It is the transaction ID. Every contract (buy or sell) or payment has a unique ID.",
+                    "type": "integer",
+                    "examples": [
+                        10867502908
+                    ]
                 },
                 "transaction_time": {
-                    "description": "Time at which transaction was performed, for buy its purchase time, for sell its sell time",
+                    "description": "Time at which transaction was performed: for buy it is purchase time, for sell it is sell time.",
                     "type": "integer"
                 }
             }
         },
         "subscription": {
             "title": "Subscription information",
-            "description": "For subscription requests only",
+            "description": "For subscription requests only.",
             "type": "object",
+            "additionalProperties": false,
             "required": [
                 "id"
             ],
             "properties": {
                 "id": {
-                    "description": "A per-connection unique identifier. Can be passed to the forget API call to unsubscribe.",
-                    "type": "string"
+                    "description": "A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.",
+                    "type": "string",
+                    "examples": [
+                        "c84a793b-8a87-7999-ce10-9b22f7ceead3"
+                    ]
                 }
             }
         },
@@ -144,7 +165,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

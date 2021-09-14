@@ -12,15 +12,18 @@
             "title": "website_status",
             "description": "Server status and other information regarding general settings",
             "type": "object",
+            "additionalProperties": false,
             "required": [
                 "api_call_limits",
                 "crypto_config",
-                "currencies_config"
+                "currencies_config",
+                "p2p_config"
             ],
             "properties": {
                 "api_call_limits": {
                     "description": "Maximum number of API calls during specified period of time.",
                     "type": "object",
+                    "additionalProperties": false,
                     "required": [
                         "max_proposal_subscription",
                         "max_requestes_general",
@@ -31,6 +34,7 @@
                         "max_proposal_subscription": {
                             "description": "Maximum subscription to proposal calls.",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "applies_to",
                                 "max"
@@ -49,6 +53,7 @@
                         "max_requestes_general": {
                             "description": "Maximum number of general requests allowed during specified period of time.",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "applies_to",
                                 "hourly",
@@ -72,6 +77,7 @@
                         "max_requests_outcome": {
                             "description": "Maximum number of outcome requests allowed during specified period of time.",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "applies_to",
                                 "hourly",
@@ -95,6 +101,7 @@
                         "max_requests_pricing": {
                             "description": "Maximum number of pricing requests allowed during specified period of time.",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "applies_to",
                                 "hourly",
@@ -124,11 +131,12 @@
                 "crypto_config": {
                     "description": "Provides minimum withdrawal for all crypto currency in USD",
                     "type": "object",
-                    "minProperties": 1,
+                    "minProperties": 0,
                     "patternProperties": {
-                        "^[A-Z]{3,4}$": {
+                        "^[a-zA-Z0-9]{2,20}$": {
                             "description": "Crypto-currency code",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "minimum_withdrawal"
                             ],
@@ -146,27 +154,51 @@
                     "type": "object",
                     "minProperties": 1,
                     "patternProperties": {
-                        "^[A-Z]{3,4}$": {
+                        "^[a-zA-Z0-9]{2,20}$": {
                             "description": "Currency code",
                             "type": "object",
+                            "additionalProperties": false,
                             "required": [
                                 "fractional_digits",
+                                "is_deposit_suspended",
+                                "is_suspended",
+                                "is_withdrawal_suspended",
                                 "stake_default",
                                 "transfer_between_accounts",
                                 "type"
                             ],
                             "properties": {
-                                "type": {
-                                    "description": "Type of the currency.",
-                                    "type": "string",
-                                    "enum": [
-                                        "fiat",
-                                        "crypto"
-                                    ]
-                                },
                                 "fractional_digits": {
                                     "description": "Number of fractional digits.",
                                     "type": "number"
+                                },
+                                "is_deposit_suspended": {
+                                    "description": "Current status for payment deposit for the currency",
+                                    "type": "number",
+                                    "enum": [
+                                        0,
+                                        1
+                                    ]
+                                },
+                                "is_suspended": {
+                                    "description": "Current status for the currency",
+                                    "type": "number",
+                                    "enum": [
+                                        0,
+                                        1
+                                    ]
+                                },
+                                "is_withdrawal_suspended": {
+                                    "description": "Current status for payment withdrawal for the currency",
+                                    "type": "number",
+                                    "enum": [
+                                        0,
+                                        1
+                                    ]
+                                },
+                                "name": {
+                                    "description": "Name of the currency.",
+                                    "type": "string"
                                 },
                                 "stake_default": {
                                     "description": "Default stake value for the currency.",
@@ -176,6 +208,7 @@
                                 "transfer_between_accounts": {
                                     "description": "Fees and range of allowed amount for transfer between accounts with different types of currencies.",
                                     "type": "object",
+                                    "additionalProperties": false,
                                     "required": [
                                         "fees",
                                         "limits"
@@ -185,7 +218,7 @@
                                             "description": "The fee that applies for transfer between accounts with different types of currencies.",
                                             "type": "object",
                                             "patternProperties": {
-                                                "^[A-Z]{3,4}$": {
+                                                "^[a-zA-Z0-9]{2,20}$": {
                                                     "description": "Currency code.",
                                                     "type": "number",
                                                     "maximum": 7,
@@ -195,24 +228,47 @@
                                         },
                                         "limits": {
                                             "description": "Range of allowed amount for transfer between accounts.",
-                                            "type": "object",
-                                            "required": [
-                                                "min"
-                                            ],
-                                            "properties": {
-                                                "max": {
-                                                    "description": "Maximum allowed amount for transfer between accounts with different types of currencies.",
-                                                    "type": "number",
-                                                    "minimum": 0
+                                            "oneOf": [
+                                                {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "min"
+                                                    ],
+                                                    "properties": {
+                                                        "max": {
+                                                            "description": "Maximum allowed amount for transfer between accounts with different types of currencies.",
+                                                            "type": "number",
+                                                            "minimum": 0
+                                                        },
+                                                        "min": {
+                                                            "description": "Minimum allowed amount for transfer between accounts with different types of currencies.",
+                                                            "type": "number",
+                                                            "minimum": 0
+                                                        }
+                                                    }
                                                 },
-                                                "min": {
-                                                    "description": "Minimum allowed amount for transfer between accounts with different types of currencies.",
-                                                    "type": "number",
-                                                    "minimum": 0
+                                                {
+                                                    "type": "null"
                                                 }
-                                            }
+                                            ]
+                                        },
+                                        "limits_dxtrade": {
+                                            "description": "Range of allowed amount for transfer between dxtrade accounts.",
+                                            "type": "object"
+                                        },
+                                        "limits_mt5": {
+                                            "description": "Range of allowed amount for transfer between mt5 accounts.",
+                                            "type": "object"
                                         }
                                     }
+                                },
+                                "type": {
+                                    "description": "Type of the currency.",
+                                    "type": "string",
+                                    "enum": [
+                                        "fiat",
+                                        "crypto"
+                                    ]
                                 }
                             }
                         }
@@ -222,12 +278,80 @@
                     "description": "Text for site status banner, contains problem description. shown only if set by the system.",
                     "type": "string"
                 },
+                "p2p_config": {
+                    "description": "Peer-to-peer payment system settings.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "adverts_active_limit",
+                        "cancellation_block_duration",
+                        "cancellation_count_period",
+                        "cancellation_grace_period",
+                        "cancellation_limit",
+                        "disabled",
+                        "maximum_advert_amount",
+                        "maximum_order_amount",
+                        "order_daily_limit",
+                        "order_payment_period"
+                    ],
+                    "properties": {
+                        "adverts_active_limit": {
+                            "description": "Maximum number of active ads allowed by an advertiser per currency pair and advert type (buy or sell).",
+                            "type": "integer"
+                        },
+                        "adverts_archive_period": {
+                            "description": "Adverts will be deactivated if no activity occurs within this period, in days.",
+                            "type": "integer"
+                        },
+                        "cancellation_block_duration": {
+                            "description": "A buyer will be blocked for this duration after exceeding the cancellation limit, in hours.",
+                            "type": "integer"
+                        },
+                        "cancellation_count_period": {
+                            "description": "The period within which to count buyer cancellations, in hours.",
+                            "type": "integer"
+                        },
+                        "cancellation_grace_period": {
+                            "description": "A buyer may cancel an order within this period without negative consequences, in minutes after order creation.",
+                            "type": "integer"
+                        },
+                        "cancellation_limit": {
+                            "description": "A buyer will be temporarily barred after marking this number of cancellations within cancellation_period.",
+                            "type": "integer"
+                        },
+                        "disabled": {
+                            "description": "When 1, the P2P service is unavailable.",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        },
+                        "maximum_advert_amount": {
+                            "description": "Maximum amount of an advert, in USD.",
+                            "type": "number"
+                        },
+                        "maximum_order_amount": {
+                            "description": "Maximum amount of an order, in USD.",
+                            "type": "number"
+                        },
+                        "order_daily_limit": {
+                            "description": "Maximum number of orders a user may create per day.",
+                            "type": "integer"
+                        },
+                        "order_payment_period": {
+                            "description": "Time allowed for order payment, in minutes after order creation.",
+                            "type": "integer"
+                        }
+                    }
+                },
                 "site_status": {
                     "description": "The current status of the website.",
                     "type": "string",
                     "enum": [
                         "up",
-                        "down"
+                        "down",
+                        "updating"
                     ]
                 },
                 "supported_languages": {
@@ -245,15 +369,19 @@
         },
         "subscription": {
             "title": "Subscription information",
-            "description": "For subscription requests only",
+            "description": "For subscription requests only.",
             "type": "object",
+            "additionalProperties": false,
             "required": [
                 "id"
             ],
             "properties": {
                 "id": {
-                    "description": "A per-connection unique identifier. Can be passed to the forget API call to unsubscribe.",
-                    "type": "string"
+                    "description": "A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.",
+                    "type": "string",
+                    "examples": [
+                        "c84a793b-8a87-7999-ce10-9b22f7ceead3"
+                    ]
                 }
             }
         },
@@ -269,7 +397,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

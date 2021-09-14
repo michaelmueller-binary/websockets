@@ -12,11 +12,12 @@
             "title": "exchange_rates",
             "description": "Exchange rate values from base to all other currencies",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "base_currency": {
                     "description": "Base currency",
                     "type": "string",
-                    "pattern": "^[A-Z]{3}$"
+                    "pattern": "^[a-zA-Z0-9]{2,20}$"
                 },
                 "date": {
                     "description": "Date retrieval epoch time represented as an integer number",
@@ -26,7 +27,7 @@
                     "description": "Rates of exchanging a unit of base currency into the target currencies",
                     "type": "object",
                     "patternProperties": {
-                        "^[A-Z]{3}$": {
+                        "^[a-zA-Z0-9]{2,20}$": {
                             "description": "The rate of exchanging a unit of the base currency into a target currency (represented by the key)",
                             "type": "number"
                         }
@@ -39,16 +40,14 @@
             "type": "object"
         },
         "msg_type": {
-            "title": "Message Type",
             "description": "Action name of the request made.",
             "type": "string",
-            "pattern": "^exchange_rates$",
             "enum": [
                 "exchange_rates"
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

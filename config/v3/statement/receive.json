@@ -12,6 +12,7 @@
             "title": "statement",
             "description": "Account statement.",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "count": {
                     "description": "Number of transactions returned in this call",
@@ -22,41 +23,90 @@
                     "type": "array",
                     "items": {
                         "type": "object",
+                        "additionalProperties": false,
                         "properties": {
                             "action_type": {
-                                "description": "It is the type of action Example: buy",
+                                "description": "It is the type of action.",
                                 "type": "string",
                                 "enum": [
                                     "buy",
                                     "sell",
                                     "deposit",
-                                    "withdrawal"
+                                    "withdrawal",
+                                    "hold",
+                                    "release",
+                                    "adjustment",
+                                    "virtual_credit",
+                                    "transfer"
                                 ]
                             },
                             "amount": {
-                                "description": "It is the amount of transaction Example: -83.2300",
-                                "type": "number"
+                                "description": "It is the amount of transaction.",
+                                "type": "number",
+                                "examples": [
+                                    -83.23
+                                ]
                             },
                             "app_id": {
-                                "description": "ID of an app where this transaction was performed. For example, it's 1 for binary.com.",
+                                "description": "ID of the application where this contract was purchased.",
                                 "type": [
                                     "integer",
                                     "null"
                                 ]
                             },
                             "balance_after": {
-                                "description": "It is the remaining balance Example: 10150.1300",
-                                "type": "number"
+                                "description": "It is the remaining balance.",
+                                "type": "number",
+                                "examples": [
+                                    10150.13
+                                ]
                             },
                             "contract_id": {
-                                "description": "It is the contract ID. Example: 4867502908",
+                                "description": "It is the contract ID.",
                                 "type": [
                                     "integer",
                                     "null"
+                                ],
+                                "examples": [
+                                    4867502908
                                 ]
                             },
+                            "fees": {
+                                "description": "Contains details about fees used for transfer. It is present only when action type is transfer.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "amount": {
+                                        "description": "Fees amount",
+                                        "type": "number"
+                                    },
+                                    "currency": {
+                                        "description": "Fees currency",
+                                        "type": "string"
+                                    },
+                                    "minimum": {
+                                        "description": "Minimum amount of fees",
+                                        "type": "number"
+                                    },
+                                    "percentage": {
+                                        "description": "Fees percentage",
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "from": {
+                                "description": "Contains details of account from which amount was transferred. It is present only when action type is transfer.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "loginid": {
+                                        "description": "Login id of the account from which money was transferred.",
+                                        "type": "string"
+                                    }
+                                }
+                            },
                             "longcode": {
-                                "description": "The description of contract purchased if description is set to 1",
+                                "description": "The description of contract purchased if description is set to `1`.",
                                 "type": "string"
                             },
                             "payout": {
@@ -78,19 +128,40 @@
                                 ]
                             },
                             "shortcode": {
-                                "description": "Compact description of the contract purchased if description is set to 1",
+                                "description": "Compact description of the contract purchased if description is set to `1`.",
                                 "type": [
                                     "null",
                                     "string"
                                 ]
                             },
+                            "to": {
+                                "description": "Contains details of account to which amount was transferred. It is present only when action type is transfer.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "loginid": {
+                                        "description": "Login id of the account to which money was transferred.",
+                                        "type": "string"
+                                    }
+                                }
+                            },
                             "transaction_id": {
-                                "description": "It is the transaction ID. In statement every contract (buy or sell) and every payment has a unique ID. Example: 10867502908",
-                                "type": "integer"
+                                "description": "It is the transaction ID. In statement every contract (buy or sell) and every payment has a unique ID.",
+                                "type": "integer",
+                                "examples": [
+                                    10867502908
+                                ]
                             },
                             "transaction_time": {
-                                "description": "It is the time of transaction Example: 1441175849",
-                                "type": "integer"
+                                "description": "It is the time of transaction.",
+                                "type": "integer",
+                                "examples": [
+                                    1441175849
+                                ]
+                            },
+                            "withdrawal_details": {
+                                "description": "Additional withdrawal details such as typical processing times, if description is set to `1`.",
+                                "type": "string"
                             }
                         }
                     }
@@ -109,7 +180,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }

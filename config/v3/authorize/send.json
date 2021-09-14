@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Authorize (request)",
-    "description": "Authorize current WebSocket session to act on behalf of the owner of a given token. Must precede request thats needs to access client account, for example purchasing and selling contracts or viewing portfolio.",
+    "description": "Authorize current WebSocket session to act on behalf of the owner of a given token. Must precede requests that need to access client account, for example purchasing and selling contracts or viewing portfolio.",
     "type": "object",
     "auth_required": 0,
     "additionalProperties": false,
@@ -16,7 +16,7 @@
             "sensitive": 1
         },
         "add_to_login_history": {
-            "description": "[Optional] Send this when you use api tokens for authorization and want to track activity using login_history call.",
+            "description": "[Optional] Send this when you use api tokens for authorization and want to track activity using `login_history` call.",
             "type": "integer",
             "default": 0,
             "enum": [
@@ -25,7 +25,7 @@
             ]
         },
         "passthrough": {
-            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the echo_req output field.",
+            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.",
             "type": "object"
         },
         "req_id": {

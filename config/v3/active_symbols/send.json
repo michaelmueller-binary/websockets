@@ -10,7 +10,7 @@
     ],
     "properties": {
         "active_symbols": {
-            "description": "If you use 'brief', only a subset of fields will be returned.",
+            "description": "If you use `brief`, only a subset of fields will be returned.",
             "type": "string",
             "enum": [
                 "brief",
@@ -35,12 +35,11 @@
             "description": "[Optional] If you specify this field, only symbols that can be traded through that product type will be returned.",
             "type": "string",
             "enum": [
-                "multi_barrier",
                 "basic"
             ]
         },
         "passthrough": {
-            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the echo_req output field.",
+            "description": "[Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.",
             "type": "object"
         },
         "req_id": {

@@ -12,10 +12,14 @@
             "title": "sell_expired",
             "description": "Sell expired contract object containing count of contracts sold",
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "count": {
-                    "description": "Example: 10",
-                    "type": "integer"
+                    "description": "The number of contracts that has been sold.",
+                    "type": "integer",
+                    "examples": [
+                        10
+                    ]
                 }
             }
         },
@@ -31,7 +35,7 @@
             ]
         },
         "req_id": {
-            "description": "Optional field sent in request to map to response, present only when request contains req_id.",
+            "description": "Optional field sent in request to map to response, present only when request contains `req_id`.",
             "type": "integer"
         }
     }
